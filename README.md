@@ -7,3 +7,5 @@ Daniel Yune
 Juan Barco
 
 Rebecca Rothschild
+
+Newest Addition: Brandon Le
