@@ -182,14 +182,14 @@ public class Date {
 	}
 
 	// TODO: for Jan 1 it should return 1; for Jan 2 it should return 2 etc.
-	// dd and mm were reversed, i swapped them to aling with practices
+	// dd and mm were reversed, i swapped them to align with practices
 	public int dateToDayNumber(int dd, int mm, int yyyy) {
 		return dd;
 	}
 
 	// TODO: for Jan 1, 2017 it should return Sunday; for Jan 2, 2017 it should
 	// return Monday etc.
-	// dd and mm were reversed, i swapped them to aling with practices
+	// dd and mm were reversed, i swapped them to align with practices
 	public String dateToDayName(int dd, int mm, int yyyy) {
 		return LocalDate.of(yyyy, mm, dd).getDayOfWeek().toString();
 	}
