@@ -1,11 +1,3 @@
 # CptS 422
 
-Team members:
-
-Daniel Yune
-
-Juan Barco
-
-Rebecca Rothschild
-
-Newest Addition: Brandon Le
+In class exercise to write tests and correct the methods for Date
