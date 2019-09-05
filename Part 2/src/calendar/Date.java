@@ -110,7 +110,7 @@ public class Date {
 	// validRangeForYear will return true if the parameter thisYear is in the valid
 	// range
 	public boolean validRangeForYear() {
-		if ((getYyyy() >= 1700) && (getYyyy() <= 2018)) {
+		if ((getYyyy() >= 1700) && (getYyyy() <= 2020)) {
 			System.out.println("Year = " + getYyyy());
 			return true;
 		} else {
@@ -216,7 +216,18 @@ public class Date {
 	}
 
 	public int dateToDayNumber() {
-		return getDd();
+		if (isValidDate()) {
+			int days = 0;
+			for (int i = 1; i < getMm(); i++)
+			{
+				days += new Date(1,i,getYyyy()).lastDayOfMonth();
+			}
+			days += getDd();
+			return days;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	public int lastDayOfMonth() {

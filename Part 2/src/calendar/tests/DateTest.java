@@ -99,25 +99,36 @@ public class DateTest {
 		doReturn("Tuesday").when(mockDate).dateToDayName();
 		assertEquals("Tuesday", mockDate.dateToDayName());
 
-//		Date spyDate2  = spy(new Date(30,8,2017));
-//		
-//		doReturn("Wednesday").when(spyDate2).getDayName();
-//		doReturn(8).when(spyDate2).getMm();
-//		doReturn(30).when(spyDate2).getDd();
-//		doReturn(2017).when(spyDate2).getYyyy();
-//		doReturn(242).when(spyDate2).getDayNumber();
-//		doReturn("Virgo").when(spyDate2).getZodiacSign();
-//		
-//		assertEquals("Wednesday, 8/30/2017, is the 242 of "
-//				+ "the year and the zodiac sign is Virgo",spyDate2.toString());
+		Date spyDate2  = spy(new Date(30,8,2017));
+		
+		doReturn("Wednesday").when(spyDate2).getDayName();
+		doReturn(8).when(spyDate2).getMm();
+		doReturn(30).when(spyDate2).getDd();
+		doReturn(2017).when(spyDate2).getYyyy();
+		doReturn(242).when(spyDate2).getDayNumber();
+		doReturn("Virgo").when(spyDate2).getZodiacSign();
+		
+		assertEquals("Wednesday, 8/30/2017, is the 242 of "
+				+ "the year and the zodiac sign is Virgo",spyDate2.toString());
 
 	}
 
-//	@Test
-//	public void testZodiacSign() {
-//		// "Capricorn": December 22 - January 19
-//		// normal and border cases:
+	@Test
+	public void testDayNumber() {
+		Date d = new Date(30,8,2017);
+		assertEquals(242, d.dateToDayNumber());
+	}
+	
+	@Test
+	public void testZodiacSign() {
+		// "Capricorn": December 22 - January 19
+		// normal and border cases:
+		
+		doReturn("Capricorn").when(mockDate).zodiacSign();
+		assertEquals("Capricorn",mockDate.zodiacSign());
+		
 //		assertEquals("Capricorn", Date.zodiacSign(12,22));
+	}
 //		assertEquals("Capricorn", Date.zodiacSign(1,19));
 //		// more border cases based on the implementation:
 //		assertEquals("Capricorn", Date.zodiacSign(12,31));
@@ -189,7 +200,7 @@ public class DateTest {
 //		assertEquals("Sagittarius",Date.zodiacSign(12,1));
 //		assertEquals("Sagittarius",Date.zodiacSign(12,21));
 //	}
-//
+
 //	@Test
 //	public void testValidRangeForDay() {
 //		// valid days

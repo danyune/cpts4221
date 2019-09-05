@@ -1,3 +1,4 @@
+package main;
 //package test422.test422_wk3;
 import java.util.Scanner;
 
