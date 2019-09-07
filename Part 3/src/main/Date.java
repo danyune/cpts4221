@@ -3,8 +3,6 @@ package main;
 
 import java.time.LocalDate;
 
-import calendar.Date;
-
 public class Date {
 
 	// attributes etc.
@@ -16,12 +14,37 @@ public class Date {
 	private String zodiacSign;
 
 	public Date(int dd, int mm, int yyyy) throws IllegalDateException {
-		if (!isValidDate(dd, mm, yyyy)) {
+		if (!isValidDate()) {
 			throw new IllegalDateException();
 		}
 		this.mm = mm;
 		this.dd = dd;
 		this.yyyy = yyyy;
+		initializeAttributes();
+	}
+
+	public String getZodiacSign() {
+		return this.zodiacSign;
+	}
+
+	public void setZodiacSign(String n) {
+		this.zodiacSign = n;
+	}
+
+	public String getDayName() {
+		return this.dayName;
+	}
+
+	public void setDayName(String n) {
+		this.dayName = n;
+	}
+
+	public int getDayNumber() {
+		return this.dayNumber;
+	}
+
+	public void setDayNumber(int n) {
+		this.dayNumber = n;
 	}
 
 	public int getMm() {
@@ -56,17 +79,21 @@ public class Date {
 
 	// Returns the day of the week
 	public String dateToDayName() {
-		if (isValidDate(dd, mm, yyyy)) {
+		if (isValidDate()) {
 			return LocalDate.of(getYyyy(), getMm(), getDd()).getDayOfWeek().toString();
 		}
 		return null;
 	}
 
 	public int dateToDayNumber() {
-		if (isValidDate(dd, mm, yyyy)) {
+		if (isValidDate()) {
 			int days = 0;
 			for (int i = 1; i < getMm(); i++) {
-				days += new Date(1, i, getYyyy()).lastDayOfMonth();
+				try {
+					days += new Date(1, i, getYyyy()).lastDayOfMonth();
+				} catch (IllegalDateException e) {
+					e.printStackTrace();
+				}
 			}
 			days += getDd();
 			return days;
@@ -76,8 +103,22 @@ public class Date {
 	}
 
 	public int lastDayOfMonth() {
-		// TODO
-		return 0;
+		if (isLeap()) {
+			if (getMm() == 2) {
+				return 29;
+			}
+		}
+		if (getMm() == 1 || getMm() == 3 || getMm() == 5 || getMm() == 7 || getMm() == 10 || getMm() == 12) {
+			return 31;
+		} else {
+			if (getMm() == 4 || getMm() == 6 || getMm() == 8 || getMm() == 9) {
+				return 30;
+			} else if (getMm() == 11) {
+				return 29;
+			} else {
+				return 28;
+			}
+		}
 	}
 
 	// Returns the zodiac sign
@@ -112,14 +153,14 @@ public class Date {
 
 	// the rest of the methods
 	// Returns true if the combination of the parameters is valid
-	public static boolean isValidDate(int thisDay, int thisMonth, int thisYear) {
-		if (!validRangeForDay(thisDay)) {
+	public boolean isValidDate() {
+		if (!validRangeForDay()) {
 			return false;
 		}
-		if (!validRangeForMonth(thisMonth)) {
+		if (!validRangeForMonth()) {
 			return false;
 		}
-		if (!validRangeForYear(thisYear)) {
+		if (!validRangeForYear()) {
 			return false;
 		}
 		return true;
@@ -127,15 +168,15 @@ public class Date {
 
 	// validRangeForDay will return true if the parameter thisDay is in the valid
 	// range
-	public static boolean validRangeForDay(int thisDay) {
-		if ((thisDay >= 1) && (thisDay <= 31)) {
-			System.out.println("Day = " + thisDay);
+	public boolean validRangeForDay() {
+		if ((getDd() >= 1) && (getDd() <= 31)) {
+			System.out.println("Day = " + getDd());
 			return true;
 		} else {
-			if (thisDay < 1) {
-				System.out.println("Day = " + thisDay + " is below minimum.");
-			} else if (thisDay > 32) {
-				System.out.println("Day = " + thisDay + " is above maximum.");
+			if (getDd() < 1) {
+				System.out.println("Day = " + getDd() + " is below minimum.");
+			} else if (getDd() > 32) {
+				System.out.println("Day = " + getDd() + " is above maximum.");
 			}
 		}
 		return false;
@@ -143,64 +184,66 @@ public class Date {
 
 	// validRangeForMonth will return true if the parameter thisMonth is in the
 	// valid range
-	public static boolean validRangeForMonth(int thisMonth) {
-		if ((thisMonth >= 1) || (thisMonth <= 12)) {
-			System.out.println("Month = " + thisMonth);
+	public boolean validRangeForMonth() {
+		if ((getMm() >= 1) || (getMm() <= 12)) {
+			System.out.println("Month = " + getMm());
 			return true;
 		} else {
-			if (thisMonth < 1) {
-				System.out.println("Month = " + thisMonth + " is below minimum.");
-			} else if (thisMonth > 12) {
-				System.out.println("Month = " + thisMonth + " is above maximum.");
+			if (getMm() < 1) {
+				System.out.println("Month = " + getMm() + " is below minimum.");
+			} else if (getMm() > 12) {
+				System.out.println("Month = " + getMm() + " is above maximum.");
 			}
 		}
 		return false;
 	}
 
-	// validRangeForYear will return true if the parameter thisYear is in the valid
+	// validRangeForYear will return true if the parameter getYyyy() is in the valid
 	// range
-	public static boolean validRangeForYear(int thisYear) {
-		if ((thisYear >= 1700) && (thisYear <= 2020)) {
-			System.out.println("Year = " + thisYear);
+	public boolean validRangeForYear() {
+		if ((getYyyy() >= 1700) && (getYyyy() <= 2020)) {
+			System.out.println("Year = " + getYyyy());
 			return true;
 		} else {
-			if (thisYear < 1700) {
-				System.out.println("Year = " + thisYear + " is below minimum.");
-			} else if (thisYear > 2020) {
-				System.out.println("Year = " + thisYear + " is above maximum.");
+			if (getYyyy() < 1700) {
+				System.out.println("Year = " + getYyyy() + " is below minimum.");
+			} else if (getYyyy() > 2020) {
+				System.out.println("Year = " + getYyyy() + " is above maximum.");
 			}
 		}
 		return false;
 	}
 
 	// validCombination will return true if the parameters are a valid combination
-	public static boolean validCombination(int thisDay, int thisMonth, int thisYear) {
-		if (thisMonth == 2) {
-			if ((isLeap(thisYear) && thisDay == 29) || (!isLeap(thisYear) && thisDay == 28)) {
+	public boolean validCombination() {
+		if (isValidDate()) {
+			if (getMm() == 2) {
+				if ((isLeap() && getDd() <= 29) || (!isLeap() && getDd() <= 28)) {
+					return true;
+				}
+			}
+
+			else if (getMm() == 11) {
+				if (getDd() <= 29) {
+					return true;
+				}
+			}
+
+			else if (getMm() == 4 || getMm() == 6 || getMm() == 8 || getMm() == 9) {
+				if (getDd() <= 30) {
+					return true;
+				}
+			}
+
+			else if (getDd() <= 31) {
 				return true;
 			}
-		}
-
-		else if (thisMonth == 11) {
-			if (thisDay == 29) {
-				return true;
-			}
-		}
-
-		else if (thisMonth == 4 || thisMonth == 6 || thisMonth == 8 || thisMonth == 9) {
-			if (thisDay == 30) {
-				return true;
-			}
-		}
-
-		else if (thisDay == 31) {
-			return true;
 		}
 		return false;
 	}
 
-	public static boolean isLeap(int thisYear) {
-		return ((thisYear % 4 == 0) && (thisYear % 100 != 0) || (thisYear % 400 == 0));
+	public boolean isLeap() {
+		return ((getYyyy() % 4 == 0) && (getYyyy() % 100 != 0) || (getYyyy() % 400 == 0));
 	}
 
 }
