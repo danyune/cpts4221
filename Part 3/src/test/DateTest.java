@@ -2,6 +2,7 @@ package test;
 //package test422.test422_wk3;
 
 import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -103,24 +104,24 @@ public class DateTest {
 			// "Capricorn": December 22 - January 19
 			// normal and border cases:
 			spyDate = spy(new Date(22, 12, 2017));
-			doReturn(12).when(spyDate).getMm();
-			doReturn(22).when(spyDate).getDd();
+//			doReturn(12).when(spyDate).getMm();
+//			doReturn(22).when(spyDate).getDd();
 			assertEquals("Capricorn", spyDate.zodiacSign());
 
 			spyDate = spy(new Date(1, 1, 2017));
-			doReturn(1).when(spyDate).getMm();
-			doReturn(1).when(spyDate).getDd();
+//			doReturn(1).when(spyDate).getMm();
+//			doReturn(1).when(spyDate).getDd();
 			assertEquals("Capricorn", spyDate.zodiacSign());
 
 			spyDate = spy(new Date(19, 1, 2017));
-			doReturn(1).when(spyDate).getMm();
-			doReturn(19).when(spyDate).getDd();
+//			doReturn(1).when(spyDate).getMm();
+//			doReturn(19).when(spyDate).getDd();
 			assertEquals("Capricorn", spyDate.zodiacSign());
 
 			// more border cases based on the implementation:
 			spyDate = spy(new Date(31, 12, 2017));
-			doReturn(12).when(spyDate).getMm();
-			doReturn(31).when(spyDate).getDd();
+//			doReturn(12).when(spyDate).getMm();
+//			doReturn(31).when(spyDate).getDd();
 			assertEquals("Capricorn", spyDate.zodiacSign());
 
 			// etc. for the rest of the signs
@@ -132,6 +133,73 @@ public class DateTest {
 		}
 	}
 
+	@Test
+	public void testIsLeap() {
+		Date spyDate;
+
+		try {
+			spyDate = spy(new Date(1, 1, 2012));
+			assertTrue(spyDate.isLeap());
+
+		} catch (IllegalDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testInvalidDate() {
+		Date spyDate;
+		try {
+			spyDate = spy(new Date(13, 13, 2019));
+			assertFalse(spyDate.isValidDate());
+		} catch (IllegalDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
+	public void testValidDate() {
+		Date spyDate;
+		try {
+			spyDate = spy(new Date(1, 1, 2019));
+			assertTrue(spyDate.isValidDate());
+		} catch (IllegalDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testDayNumber() {
+		Date spyDate;
+		try {
+			spyDate = spy(new Date(30, 8, 2017));
+			assertEquals(242, spyDate.dateToDayNumber());
+		} catch (IllegalDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testDate() {
+
+		Date spyDate;
+		try {
+			spyDate = spy(new Date(1,2,2000));
+			assertEquals(1, spyDate.getDd());
+			assertEquals(2, spyDate.getMm());
+			assertEquals(2000, spyDate.getYyyy());
+		} catch (IllegalDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
 	// the rest of the tests...
 
 }
