@@ -175,7 +175,7 @@ public class Date {
 		} else {
 			if (getDd() < 1) {
 				System.out.println("Day = " + getDd() + " is below minimum.");
-			} else if (getDd() > 32) {
+			} else if (getDd() > 31) {
 				System.out.println("Day = " + getDd() + " is above maximum.");
 			}
 		}

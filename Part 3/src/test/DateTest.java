@@ -27,24 +27,31 @@ import static org.mockito.Mockito.*;
 @PrepareForTest(Date.class)
 public class DateTest {
 
-//	@Test
-//	public void testValidCombination() {
-//		PowerMockito.spy(Date.class);
-//		PowerMockito.when("isLeap").the
-//		boolean returnValue = Date.isLeap(2012);
-//		PowerMockito.verifyStatic(Date.class);
-//		Date.isLeap(2012);
-//		assertEquals(true, returnValue);
-//		assertTrue(Date.validCombination(29, 2, 2012));
-//		PowerMockito.when(Date.isLeap(2017)).thenReturn(false);
-//		returnValue = Date.isLeap(2017);
-//		PowerMockito.verifyStatic(Date.class);
-//		Date.isLeap(2017);
-//		assertEquals(false, returnValue);
-//		assertFalse(Date.validCombination(29, 2, 2017));
-//		assertTrue(Date.validCombination(31, 1, 2017));
-//		assertFalse(Date.validCombination(31, 6, 2017));
-//	}
+	@Test
+	public void testValidCombination() {
+		Date d;
+		try {
+			d = new Date(1,1,2012);
+			PowerMockito.spy(Date.class);
+			PowerMockito.when(d.isLeap()).thenReturn(true);
+			boolean returnValue = d.isLeap();
+			PowerMockito.verifyStatic(Date.class);
+			d.isLeap();
+			assertEquals(true, returnValue);
+			assertTrue(d.validCombination());
+			PowerMockito.when(d.isLeap()).thenReturn(false);
+			returnValue = d.isLeap();
+			PowerMockito.verifyStatic(Date.class);
+			d.isLeap();
+			assertEquals(false, returnValue);
+			assertFalse(d.validCombination());
+			assertTrue(d.validCombination());
+			assertFalse(d.validCombination());
+		} catch (IllegalDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Test
 	public void testDateValid() {
