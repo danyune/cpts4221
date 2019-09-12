@@ -6,7 +6,7 @@
     <rule-group-metadata name="My custom checks"  priority="1600">
         <description>%MyCustomChecks.desc</description>
 
-        <rule-metadata name="%AntiHungarian.name" internal-name="AntiHungarianDemo" parent="TreeWalker">
+        <rule-metadata name="%AntiHungarian.name" internal-name="AntiHungarian" parent="TreeWalker">
             <alternative-name internal-name="main.AntiHungarian" />
             <description>%AntiHungarian.desc</description>
         </rule-metadata>
