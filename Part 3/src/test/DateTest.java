@@ -27,6 +27,23 @@ import static org.mockito.Mockito.*;
 @PrepareForTest(Date.class)
 public class DateTest {
 
+	@Test 
+	public void testNextDay() {
+		Date spyDate;
+		try {
+			spyDate = spy(new Date(31,1,2000));
+			doReturn(new int[] {1,2,2000}).when(spyDate).nextDay();
+			assertEquals(new int[] {1,2,2000}, spyDate.nextDay());
+			spyDate.setMm(12);
+			doReturn(new int[] {1,1,2001}).when(spyDate).nextDay();
+			assertEquals(new int[] {1,1,2001}, spyDate.nextDay());
+		} catch (IllegalDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	@Test
 	public void testValidCombination() {
 		Date d;

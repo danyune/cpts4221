@@ -121,6 +121,20 @@ public class Date {
 		}
 	}
 
+	public int[] nextDay() {
+		int[] date = new int[3];
+		if (getMm() == 12) {
+			if (getDd() == lastDayOfMonth()) {
+				date[0] = 1;
+				date[1] = 1;
+				date[2] = getYyyy() + 1;
+			}
+		} else if (getDd() == lastDayOfMonth()) {
+			// FINISH
+		}
+		return new int[0];
+	}
+
 	// Returns the zodiac sign
 	public String zodiacSign() {
 		if ((getMm() == 12 && getDd() >= 22 && getDd() <= 31) || (getMm() == 1 && getDd() >= 1 && getDd() <= 19))
