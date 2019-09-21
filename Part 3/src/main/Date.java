@@ -121,6 +121,7 @@ public class Date {
 		}
 	}
 
+	// dd mm yyyy
 	public int[] nextDay() {
 		int[] date = new int[3];
 		if (getMm() == 12) {
@@ -131,8 +132,15 @@ public class Date {
 			}
 		} else if (getDd() == lastDayOfMonth()) {
 			// FINISH
+			date[0] = 1;
+			date[1] = getMm() + 1;
+			date[2] = getYyyy();
+		} else {
+			date[0] = getDd() + 1;
+			date[1] = getMm();
+			date[2] = getYyyy();
 		}
-		return new int[0];
+		return date;
 	}
 
 	// Returns the zodiac sign

@@ -27,28 +27,42 @@ import static org.mockito.Mockito.*;
 @PrepareForTest(Date.class)
 public class DateTest {
 
-	@Test 
+	@Test
 	public void testNextDay() {
 		Date spyDate;
 		try {
-			spyDate = spy(new Date(31,1,2000));
-			doReturn(new int[] {1,2,2000}).when(spyDate).nextDay();
-			assertEquals(new int[] {1,2,2000}, spyDate.nextDay());
+			spyDate = spy(new Date(31, 1, 2000));
+			doReturn(new int[] { 1, 2, 2000 }).when(spyDate).nextDay();
+			assertEquals(new int[] { 1, 2, 2000 }, spyDate.nextDay());
 			spyDate.setMm(12);
-			doReturn(new int[] {1,1,2001}).when(spyDate).nextDay();
-			assertEquals(new int[] {1,1,2001}, spyDate.nextDay());
+			doReturn(new int[] { 1, 1, 2001 }).when(spyDate).nextDay();
+			assertEquals(new int[] { 1, 1, 2001 }, spyDate.nextDay());
 		} catch (IllegalDateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-	
+
+	@Test
+	public void testRealNextDay() {
+		Date spyDate;
+		try {
+			spyDate = spy(new Date(31, 7, 2000));
+			assertEquals(new int[] { 1, 8, 2000 }, spyDate.nextDay());
+			spyDate = spy(new Date(31, 12, 2000));
+			assertEquals(new int[] { 1, 1, 2001 }, spyDate.nextDay());
+			spyDate = spy(new Date(29, 2, 2004));
+			assertEquals(new int[] { 1, 3, 2004 }, spyDate.nextDay());
+		} catch (IllegalDateException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Test
 	public void testValidCombination() {
 		Date d;
 		try {
-			d = new Date(1,1,2012);
+			d = new Date(1, 1, 2012);
 			PowerMockito.spy(Date.class);
 			PowerMockito.when(d.isLeap()).thenReturn(true);
 			boolean returnValue = d.isLeap();
@@ -188,7 +202,7 @@ public class DateTest {
 	public void testValidDate() {
 		Date spyDate;
 		try {
-			spyDate = spy(new Date(1, 1, 2019));
+			spyDate = spy(new Date(1, 1, 2011));
 			assertTrue(spyDate.isValidDate());
 		} catch (IllegalDateException e) {
 			// TODO Auto-generated catch block
@@ -213,7 +227,7 @@ public class DateTest {
 
 		Date spyDate;
 		try {
-			spyDate = spy(new Date(1,2,2000));
+			spyDate = spy(new Date(1, 2, 2000));
 			assertEquals(1, spyDate.getDd());
 			assertEquals(2, spyDate.getMm());
 			assertEquals(2000, spyDate.getYyyy());
@@ -221,7 +235,6 @@ public class DateTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 
 	}
 	// the rest of the tests...
