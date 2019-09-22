@@ -3,15 +3,37 @@
 "-//eclipse-cs//DTD Check Metadata 1.1//EN"
 "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
 <checkstyle-metadata>
-	<rule-group-metadata name="demo checks"
+	<rule-group-metadata name="Team Rebecca checks"
 		priority="1600">
-		<description>%MyCustomChecks.desc</description>
-		
+		<description>%FirstChecks.desc</description>
+
 		<rule-metadata name="%OperatorsCheck.name"
 			internal-name="Operators" parent="TreeWalker">
 			<alternative-name
 				internal-name="main.OperatorsCheck" />
 			<description>%OperatorsCheck.desc</description>
 		</rule-metadata>
+		
+		<rule-metadata name="%VariablesCheck.name"
+			internal-name="Variables" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.VariablesCheck" />
+			<description>%VariablesCheck.desc</description>
+		</rule-metadata>
+
+		<rule-metadata name="%LocalMethodsCheck.name"
+			internal-name="LocalMethods" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.LocalMethodsCheck" />
+			<description>%LocalMethodsCheck.desc</description>
+		</rule-metadata>
+		
+		<rule-metadata name="%LoopsCheck.name"
+			internal-name="Loops" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.LoopsCheck" />
+			<description>%LoopsCheck.desc</description>
+		</rule-metadata>
+		
 	</rule-group-metadata>
 </checkstyle-metadata>

@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import com.puppycrawl.tools.checkstyle.api.*;
 
-public class OperatorsCheck extends AbstractCheck {
-	private int operatorsCount = 0;
+public class VariablesCheck extends AbstractCheck {
+	private int variablesCount = 0;
 
 	@Override
 	public int[] getRequiredTokens() {
@@ -24,25 +24,28 @@ public class OperatorsCheck extends AbstractCheck {
 
 	@Override
 	public void beginTree(DetailAST ast) {
-		operatorsCount = 0;
+		variablesCount = 0;
 	}
 
 	@Override
 	public void finishTree(DetailAST ast) {
-		String catchMsg = "Number of Operators: ";
-		log(ast.getLineNo(), catchMsg + operatorsCount);
+		// Edit what you want the warning area to display
+		
+		// TODO: Change catchMsg to what you want to display
+		String catchMsg = "Number of CHANGEME: ";
+		log(ast.getLineNo(), catchMsg + variablesCount);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
-		Arrays.stream(tokenTypes()).forEach(x -> operatorsCount += countTokens(objBlock, x));
+		Arrays.stream(tokenTypes()).forEach(x -> variablesCount += countTokens(objBlock, x));
 	}
 
-	// I consider operators as =, +, -, /, *, and %
 	private int[] tokenTypes() {
-		return new int[] { TokenTypes.ASSIGN, TokenTypes.PLUS, TokenTypes.MINUS, TokenTypes.DIV, TokenTypes.STAR,
-				TokenTypes.MOD };
+		// TODO: Put in the TokenTypes here for what you need
+		// Fill your own below in the format: return new int[] { TokenTypes.SOMETHING, TokenTypes.SOMETHINGELSE };
+		return new int[] { };
 	}
 
 	private int countTokens(DetailAST ast, int tokenTypes) {
