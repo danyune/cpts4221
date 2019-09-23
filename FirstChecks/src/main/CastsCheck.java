@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import com.puppycrawl.tools.checkstyle.api.*;
 
-public class LocalMethodsCheck extends AbstractCheck {
-	private int localMethods = 0;
+public class CastsCheck extends AbstractCheck {
+	private int casts = 0;
 
 	@Override
 	public int[] getRequiredTokens() {
@@ -24,23 +24,23 @@ public class LocalMethodsCheck extends AbstractCheck {
 
 	@Override
 	public void beginTree(DetailAST ast) {
-		localMethods = 0;
+		casts = 0;
 	}
 
 	@Override
 	public void finishTree(DetailAST ast) {
-		String catchMsg = "Number of local method references: ";
-		log(ast.getLineNo(), catchMsg + localMethods);
+		String catchMsg = "Number of casts: ";
+		log(ast.getLineNo(), catchMsg + casts);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
-		Arrays.stream(tokenTypes()).forEach(x -> localMethods += countTokens(objBlock, x));
+		Arrays.stream(tokenTypes()).forEach(x -> casts += countTokens(objBlock, x));
 	}
 
 	private int[] tokenTypes() {
-		return new int[] {TokenTypes.METHOD_CALL};
+		return new int[] {TokenTypes.TYPECAST};
 	}
 
 	private int countTokens(DetailAST ast, int tokenTypes) {
