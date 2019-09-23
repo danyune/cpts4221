@@ -34,6 +34,12 @@
 				internal-name="main.LoopsCheck" />
 			<description>%LoopsCheck.desc</description>
 		</rule-metadata>
+
+		<rule-metadata name="%CastsCheck.name"
+			internal-name="Casts" parent="TreeWalker">
+			<alternative-name internal-name="main.CastsCheck" />
+			<description>%CastsCheck.desc</description>
+		</rule-metadata>
 		
 	</rule-group-metadata>
 </checkstyle-metadata>

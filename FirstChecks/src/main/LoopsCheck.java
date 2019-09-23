@@ -31,8 +31,7 @@ public class LoopsCheck extends AbstractCheck {
 	public void finishTree(DetailAST ast) {
 		// Edit what you want the warning area to display
 		
-		// TODO: Change catchMsg to what you want to display
-		String catchMsg = "Number of CHANGEME: ";
+		String catchMsg = "Number of Loops: ";
 		log(ast.getLineNo(), catchMsg + loops);
 	}
 
@@ -43,9 +42,7 @@ public class LoopsCheck extends AbstractCheck {
 	}
 
 	private int[] tokenTypes() {
-		// TODO: Put in the TokenTypes here for what you need
-		// Fill your own below in the format: return new int[] { TokenTypes.SOMETHING, TokenTypes.SOMETHINGELSE };
-		return new int[] { };
+		return new int[] { TokenTypes.LITERAL_FOR, TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO};
 	}
 
 	private int countTokens(DetailAST ast, int tokenTypes) {

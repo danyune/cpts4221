@@ -1,11 +1,11 @@
 # CptS 422
 
-Team members:
+Deliverable 1: 4 metrics implemented
 
-Daniel Yune
+Daniel - Operators Count
 
-Juan Barco
+Rebecca - Variables Count
 
-Rebecca Rothschild
+Juan - Loops Count
 
-Newest Addition: Brandon Le
+Brandon - Type Cast Count
