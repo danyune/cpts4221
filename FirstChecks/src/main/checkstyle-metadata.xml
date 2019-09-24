@@ -40,10 +40,10 @@
 			<description>%CastsCheck.desc</description>
 		</rule-metadata>
 
-		<rule-metadata name="%OperandCheck.name"
-			internal-name="Operand" parent="TreeWalker">
+		<rule-metadata name="%OperandsCheck.name"
+			internal-name="Operands" parent="TreeWalker">
 			<alternative-name
-				internal-name="main.OperandCheck" />
+				internal-name="main.OperandsCheck" />
 			<description>%OperandCheck.desc</description>
 		</rule-metadata>
 

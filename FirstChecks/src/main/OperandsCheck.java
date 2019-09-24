@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import com.puppycrawl.tools.checkstyle.api.*;
 
-public class OperandCheck extends AbstractCheck {
+public class OperandsCheck extends AbstractCheck {
 	private int operandCount = 0;
 
 	@Override
