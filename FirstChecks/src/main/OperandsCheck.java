@@ -19,7 +19,7 @@ public class OperandsCheck extends AbstractCheck {
 
 	@Override
 	public int[] getDefaultTokens() {
-		return new int[] { TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF };
+		return new int[] { TokenTypes.EXPR };
 	}
 
 	@Override
@@ -35,8 +35,8 @@ public class OperandsCheck extends AbstractCheck {
 
 	@Override
 	public void visitToken(DetailAST ast) {
-		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
-		Arrays.stream(tokenTypes()).forEach(x -> operandCount += countTokens(objBlock, x));
+		DetailAST classObject = ast.findFirstToken(TokenTypes.CLASS_DEF);
+		Arrays.stream(tokenTypes()).forEach(x -> operandCount += countTokens(classObject, x));
 	}
 
 	private int[] tokenTypes() {
