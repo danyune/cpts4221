@@ -35,31 +35,35 @@ public class OperandsCheck extends AbstractCheck {
 
 	@Override
 	public void visitToken(DetailAST ast) {
-		DetailAST classObject = ast.findFirstToken(TokenTypes.CLASS_DEF);
-		Arrays.stream(tokenTypes()).forEach(x -> operandCount += countTokens(classObject, x));
+		Arrays.stream(tokenTypes()).forEach(x -> operandCount += countTokens(ast, x));
 	}
 
 	private int[] tokenTypes() {
-		return new int[] { TokenTypes.EXPR };
+		return new int[] { TokenTypes.EXPR, TokenTypes.VARIABLE_DEF };
 	}
 
 	private int[] operandArray() {
 		return new int[] { TokenTypes.NUM_DOUBLE, TokenTypes.NUM_FLOAT, TokenTypes.NUM_INT, TokenTypes.NUM_LONG,
-				TokenTypes.VARIABLE_DEF };
+				TokenTypes.IDENT };
 	}
 
 	private int countTokens(DetailAST ast, int tokenTypes) {
 		// If the class has anything in it first
 		if (ast.getChildCount() > 0) {
 			int count = 0;
-//			count += ast.getChildCount(tokenTypes);
-			int[] tokenArray = operandArray();
-			for (int token : tokenArray) {
-				count += ast.getChildCount(token);
-			}
-			
+
 			// Find first child, assuming first method
 			DetailAST child = ast.getFirstChild();
+
+			// If this child is a variable def AND contains assign OR if it is an EXPR
+			for (int asdf : tokenTypes()) {
+				
+			}
+			for (int n : operandArray()) {
+				if (child.getType() == n) {
+					count++;
+				}
+			}
 
 			// Keep checking each method until we have no more
 			while (child != null) {
