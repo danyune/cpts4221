@@ -35,59 +35,33 @@ public class OperandsCheck extends AbstractCheck {
 
 	@Override
 	public void visitToken(DetailAST ast) {
+
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
-		operandCount += countTokens(objBlock);
-	}
 
-	private int[] operandArray() {
-		return new int[] { TokenTypes.NUM_DOUBLE, TokenTypes.NUM_FLOAT, TokenTypes.NUM_INT, TokenTypes.NUM_LONG,
-				TokenTypes.IDENT };
-	}
-
-	private int countTokens(DetailAST ast) {
-		// If the class has anything in it first
-		if (ast.getChildCount() > 0) {
-			DetailAST child;
-			int count = 0;
-
-			if (ast.getChildCount(TokenTypes.VARIABLE_DEF) > 0) {
-				child = ast.findFirstToken(TokenTypes.VARIABLE_DEF);
-				if (child.getChildCount(TokenTypes.ASSIGN) > 0) {
-					count += countGoodSection(child);
-				}
-			}
-
-			if (ast.getChildCount(TokenTypes.EXPR) > 0) {
-				child = ast.findFirstToken(TokenTypes.EXPR);
-				while (child != null) {
-					if (child.getChildCount(TokenTypes.ASSIGN) > 0) {
-						count += countGoodSection(child);
-					}
-					child = child.getNextSibling();
-				}
-			}
-
-			// Find first child, assuming first method
-			child = ast.getFirstChild();
-
-			// Keep checking each method until we have no more
+		if (objBlock.getChildCount() > 0) {
+			// Global operands
+			DetailAST child = objBlock.getFirstChild();
 			while (child != null) {
-				count += countTokens(child);
+				if (child.getType() == TokenTypes.VARIABLE_DEF) {
+					operandCount += countGoodSection(child);
+				}
+				if (child.getType() == TokenTypes.METHOD_DEF) {
+					// operandCount++;
+					operandCount += countGoodSection(child.findFirstToken(TokenTypes.SLIST));
+				}
 				child = child.getNextSibling();
 			}
-			return count;
-
-			// Means class/interface didn't have nothin
-		} else {
-			return 0;
 		}
 	}
 
 	private int countGoodSection(DetailAST ast) {
 		if (ast.getChildCount() > 0) {
 			int total = 0;
+
 			for (int n : operandArray()) {
-				total += ast.getChildCount(n);
+				if (ast.getType() != TokenTypes.DOT) {
+					total += ast.getChildCount(n);
+				}
 			}
 
 			DetailAST child = ast.getFirstChild();
@@ -100,5 +74,10 @@ public class OperandsCheck extends AbstractCheck {
 		} else {
 			return 0;
 		}
+	}
+
+	private int[] operandArray() {
+		return new int[] { TokenTypes.NUM_DOUBLE, TokenTypes.NUM_FLOAT, TokenTypes.NUM_INT, TokenTypes.NUM_LONG,
+				TokenTypes.IDENT };
 	}
 }
