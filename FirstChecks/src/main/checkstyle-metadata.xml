@@ -42,9 +42,20 @@
 
 		<rule-metadata name="%OperandsCheck.name"
 			internal-name="Operands" parent="TreeWalker">
-			<alternative-name
-				internal-name="main.OperandsCheck" />
+			<alternative-name internal-name="main.OperandsCheck" />
 			<description>%OperandCheck.desc</description>
+		</rule-metadata>
+
+		<rule-metadata name="HalsteadVocabularyCheck.name"
+			internal-name="HalsteadVocabulary" parent="TreeWalker">
+			<alternative-name internal-name="main.HalsteadVocabularyCheck" />
+			<description>%HalsteadVocabularyCheck.desc</description>
+		</rule-metadata>
+
+		<rule-metadata name="HalsteadLengthCheck.name"
+			internal-name="HalsteadLength" parent="TreeWalker">
+			<alternative-name internal-name="main.HalsteadLengthCheck" />
+			<description>%HalsteadLengthCheck.desc</description>
 		</rule-metadata>
 
 	</rule-group-metadata>
