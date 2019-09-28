@@ -36,8 +36,23 @@ public class OperatorsCheck extends AbstractCheck {
 	@Override
 	public void visitToken(DetailAST ast) {
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
-		operatorsCount += countTokens(objBlock);
-//		Arrays.stream(tokenTypes()).forEach(x -> operatorsCount += countTokens(objBlock, x));
+
+		if (objBlock.getChildCount() > 0) {
+			// Global operands
+			DetailAST child = objBlock.getFirstChild();
+			while (child != null) {
+				if (child.getType() == TokenTypes.VARIABLE_DEF) {
+					operatorsCount += countTokens(child);
+				}
+				if (child.getType() == TokenTypes.METHOD_DEF) {
+					if (child.getChildCount(TokenTypes.SLIST) > 0) {
+						operatorsCount++;
+						operatorsCount += countTokens(child.findFirstToken(TokenTypes.SLIST));
+					}
+				}
+				child = child.getNextSibling();
+			}
+		}
 	}
 
 	private int[] tokenTypes() {
@@ -45,11 +60,17 @@ public class OperatorsCheck extends AbstractCheck {
 				TokenTypes.MOD, TokenTypes.LCURLY, TokenTypes.RCURLY, TokenTypes.SLIST, TokenTypes.RPAREN,
 				TokenTypes.LPAREN, TokenTypes.LITERAL_WHILE, TokenTypes.DO_WHILE, TokenTypes.LITERAL_FOR,
 				TokenTypes.METHOD_CALL, TokenTypes.DOT, TokenTypes.LITERAL_SWITCH, TokenTypes.LITERAL_CASE,
-				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_ELSE, TokenTypes.LITERAL_RETURN };
+				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_ELSE, TokenTypes.LITERAL_RETURN, TokenTypes.LITERAL_BREAK,
+				TokenTypes.COMMA, TokenTypes.RBRACK, TokenTypes.ARRAY_DECLARATOR, TokenTypes.ARRAY_INIT,
+				TokenTypes.SEMI, TokenTypes.BOR, TokenTypes.BOR_ASSIGN, TokenTypes.BAND_ASSIGN, TokenTypes.BAND,
+				TokenTypes.BSR_ASSIGN, TokenTypes.BSR, TokenTypes.BXOR_ASSIGN, TokenTypes.BXOR, TokenTypes.DIV_ASSIGN,
+				TokenTypes.MINUS_ASSIGN, TokenTypes.MOD_ASSIGN, TokenTypes.PLUS_ASSIGN, TokenTypes.SL,
+				TokenTypes.SL_ASSIGN, TokenTypes.BNOT, TokenTypes.SR_ASSIGN, TokenTypes.SR, TokenTypes.STAR_ASSIGN,
+				TokenTypes.INC, TokenTypes.POST_INC, TokenTypes.DEC, TokenTypes.POST_DEC };
 	}
 
 	private int countTokens(DetailAST ast) {
-		// If the OBJBLOCK has anything
+
 		if (ast.getChildCount() > 0) {
 			int count = 0;
 

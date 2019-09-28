@@ -43,31 +43,34 @@ public class OperandsCheck extends AbstractCheck {
 			DetailAST child = objBlock.getFirstChild();
 			while (child != null) {
 				if (child.getType() == TokenTypes.VARIABLE_DEF) {
-					operandCount += countGoodSection(child);
+					operandCount += countTokens(child);
 				}
 				if (child.getType() == TokenTypes.METHOD_DEF) {
 					// operandCount++;
-					operandCount += countGoodSection(child.findFirstToken(TokenTypes.SLIST));
+					operandCount += countTokens(child.findFirstToken(TokenTypes.SLIST));
 				}
 				child = child.getNextSibling();
 			}
 		}
 	}
 
-	private int countGoodSection(DetailAST ast) {
+	private int[] operandArray() {
+		return new int[] { TokenTypes.NUM_DOUBLE, TokenTypes.NUM_FLOAT, TokenTypes.NUM_INT, TokenTypes.NUM_LONG,
+				TokenTypes.IDENT };
+	}
+
+	private int countTokens(DetailAST ast) {
 		if (ast.getChildCount() > 0) {
 			int total = 0;
 
 			for (int n : operandArray()) {
-				if (ast.getType() != TokenTypes.DOT) {
-					total += ast.getChildCount(n);
-				}
+				total += ast.getChildCount(n);
 			}
 
 			DetailAST child = ast.getFirstChild();
 
 			while (child != null) {
-				total += countGoodSection(child);
+				total += countTokens(child);
 				child = child.getNextSibling();
 			}
 			return total;
@@ -76,8 +79,4 @@ public class OperandsCheck extends AbstractCheck {
 		}
 	}
 
-	private int[] operandArray() {
-		return new int[] { TokenTypes.NUM_DOUBLE, TokenTypes.NUM_FLOAT, TokenTypes.NUM_INT, TokenTypes.NUM_LONG,
-				TokenTypes.IDENT };
-	}
 }
