@@ -36,27 +36,33 @@ public class OperatorsCheck extends AbstractCheck {
 	@Override
 	public void visitToken(DetailAST ast) {
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
-		Arrays.stream(tokenTypes()).forEach(x -> operatorsCount += countTokens(objBlock, x));
+		operatorsCount += countTokens(objBlock);
+//		Arrays.stream(tokenTypes()).forEach(x -> operatorsCount += countTokens(objBlock, x));
 	}
 
-	// I consider operators as =, +, -, /, *, and %
 	private int[] tokenTypes() {
 		return new int[] { TokenTypes.ASSIGN, TokenTypes.PLUS, TokenTypes.MINUS, TokenTypes.DIV, TokenTypes.STAR,
-				TokenTypes.MOD };
+				TokenTypes.MOD, TokenTypes.LCURLY, TokenTypes.RCURLY, TokenTypes.SLIST, TokenTypes.RPAREN,
+				TokenTypes.LPAREN, TokenTypes.LITERAL_WHILE, TokenTypes.DO_WHILE, TokenTypes.LITERAL_FOR,
+				TokenTypes.METHOD_CALL, TokenTypes.DOT, TokenTypes.LITERAL_SWITCH, TokenTypes.LITERAL_CASE,
+				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_ELSE, TokenTypes.LITERAL_RETURN };
 	}
 
-	private int countTokens(DetailAST ast, int tokenTypes) {
-		// If the class has anything in it first
+	private int countTokens(DetailAST ast) {
+		// If the OBJBLOCK has anything
 		if (ast.getChildCount() > 0) {
 			int count = 0;
-			count += ast.getChildCount(tokenTypes);
+
+			for (int n : tokenTypes()) {
+				count += ast.getChildCount(n);
+			}
 
 			// Find first child, assuming first method
 			DetailAST child = ast.getFirstChild();
 
 			// Keep checking each method until we have no more
 			while (child != null) {
-				count += countTokens(child, tokenTypes);
+				count += countTokens(child);
 				child = child.getNextSibling();
 			}
 			return count;

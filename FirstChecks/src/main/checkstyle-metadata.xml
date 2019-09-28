@@ -48,15 +48,25 @@
 
 		<rule-metadata name="HalsteadVocabularyCheck.name"
 			internal-name="HalsteadVocabulary" parent="TreeWalker">
-			<alternative-name internal-name="main.HalsteadVocabularyCheck" />
+			<alternative-name
+				internal-name="main.HalsteadVocabularyCheck" />
 			<description>%HalsteadVocabularyCheck.desc</description>
 		</rule-metadata>
 
 		<rule-metadata name="HalsteadLengthCheck.name"
 			internal-name="HalsteadLength" parent="TreeWalker">
-			<alternative-name internal-name="main.HalsteadLengthCheck" />
+			<alternative-name
+				internal-name="main.HalsteadLengthCheck" />
 			<description>%HalsteadLengthCheck.desc</description>
 		</rule-metadata>
+
+		<rule-metadata name="HalsteadDifficultyCheck.name"
+			internal-name="HalsteadDifficulty" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.HalsteadDifficultyCheck" />
+			<description>%HalsteadDifficultyCheck.desc</description>
+		</rule-metadata>
+
 
 	</rule-group-metadata>
 </checkstyle-metadata>
