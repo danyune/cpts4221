@@ -10,15 +10,8 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 	private int operandsCount = 0;
 	private int uniqueOperators = 0;
 	private int uniqueOperands = 0;
-	private int cycTotal = 0;
-	
-	private int testValue = 0;
-
-	// CC stuff
-	/** The current value. */
-	private BigInteger currentValue = BigInteger.ONE;
-	/** Stack of values - all but the current value. */
-	private final Deque<BigInteger> valueStack = new ArrayDeque<>();
+	private int cycTotal = 1;
+	private List<String> globalVariables = new ArrayList<String>();
 
 	@Override
 	public int[] getRequiredTokens() {
@@ -41,23 +34,8 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 		operandsCount = 0;
 		uniqueOperators = 0;
 		uniqueOperands = 0;
-		cycTotal = 0;
-		testValue = 0;
-	}
-
-	@Override
-	public void leaveToken(DetailAST ast) {
-
-		switch (ast.getType()) {
-		case TokenTypes.CTOR_DEF:
-		case TokenTypes.METHOD_DEF:
-		case TokenTypes.INSTANCE_INIT:
-		case TokenTypes.STATIC_INIT:
-			leaveMethodDef(ast);
-			break;
-		default:
-			break;
-		}
+		cycTotal = 1;
+		globalVariables.clear();
 	}
 
 	@Override
@@ -79,6 +57,14 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 		// halsteadVolume * halsteadDifficulty
 		double halsteadEffort = halsteadDifficulty * halsteadVolume;
 
+		// 171 - 52 * log_2(halsteadVolume) - 0.23 * (cycTotal) - 16.2 *
+		// log_2(getLines().length)
+		// Not doing comments lol f adding more
+		double maintainabilityIndex = (171 - (5.2 * (Math.log(halsteadVolume) / Math.log(2)))) - (0.23 * cycTotal)
+				- (16.2 * (Math.log(getLines().length) / Math.log(2)));
+
+		int countLines = getLines().length;
+
 		log(ast.getLineNo(), "Number of Operators: " + operatorsCount);
 		log(ast.getLineNo(), "Number of Operands: " + operandsCount);
 		log(ast.getLineNo(), "Halstead Length: " + halsteadLength);
@@ -86,66 +72,11 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 		log(ast.getLineNo(), "Halstead Difficulty: " + halsteadDifficulty);
 		log(ast.getLineNo(), "Halstead Volume: " + halsteadVolume);
 		log(ast.getLineNo(), "Halstead Effort: " + halsteadEffort);
-		log(ast.getLineNo(), "CYC: " + cycTotal);
-		log(ast.getLineNo(), "Test Value: " + testValue);
-	}
-
-	/**
-	 * Hook called when visiting a token. Will not be called the method definition
-	 * tokens.
-	 *
-	 * @param ast the token being visited
-	 */
-	private void visitTokenHook(DetailAST ast) {
-		if (ast.getType() != TokenTypes.LITERAL_SWITCH) {
-			incrementCurrentValue(BigInteger.ONE);
-		}
-	}
-
-	private void leaveMethodDef(DetailAST ast) {
-		cycTotal += currentValue.intValue();
-	}
-
-	/**
-	 * Increments the current value by a specified amount.
-	 *
-	 * @param amount the amount to increment by
-	 */
-	private void incrementCurrentValue(BigInteger amount) {
-		currentValue = currentValue.add(amount);
-	}
-
-	/** Push the current value on the stack. */
-	private void pushValue() {
-		valueStack.push(currentValue);
-		currentValue = BigInteger.ONE;
-	}
-
-	/**
-	 * Pops a value off the stack and makes it the current value.
-	 */
-	private void popValue() {
-		currentValue = valueStack.pop();
-	}
-
-	/** Process the start of the method definition. */
-	private void visitMethodDef() {
-		pushValue();
+		log(ast.getLineNo(), "Maintainability Index: " + maintainabilityIndex);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
-		switch (ast.getType()) {
-		case TokenTypes.CTOR_DEF:
-		case TokenTypes.METHOD_DEF:
-		case TokenTypes.INSTANCE_INIT:
-		case TokenTypes.STATIC_INIT:
-			testValue++;
-			visitMethodDef();
-			break;
-		default:
-			visitTokenHook(ast);
-		}
 
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
 
@@ -155,24 +86,31 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 			}
 		}
 		for (int n : operandTokens()) {
-			if (objBlock.branchContains(n)) {
-				uniqueOperands++;
+			if (n != TokenTypes.IDENT) {
+				if (objBlock.branchContains(n)) {
+					uniqueOperands++;
+				}
 			}
 		}
 
 		if (objBlock.getChildCount() > 0) {
 			// Global operands
 			DetailAST child = objBlock.getFirstChild();
+
 			while (child != null) {
 				if (child.getType() == TokenTypes.VARIABLE_DEF) {
+					globalVariables.add(child.findFirstToken(TokenTypes.IDENT).getText());
+					uniqueOperands++;
 					operandsCount++;
-					increaseCounts(child);
+					operandsCount += countOperands(child);
+					operatorsCount += countOperators(child);
 				}
 				if (child.getType() == TokenTypes.METHOD_DEF) {
 					if (child.getChildCount(TokenTypes.SLIST) > 0) {
 						// Add one for the open curly bracket for the statement list
 						operatorsCount++;
-						increaseCounts(child.findFirstToken(TokenTypes.SLIST));
+						operandsCount += countOperands(child.findFirstToken(TokenTypes.SLIST));
+						operatorsCount += countOperators(child.findFirstToken(TokenTypes.SLIST));
 					}
 				}
 				child = child.getNextSibling();
@@ -191,7 +129,7 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 				TokenTypes.BSR_ASSIGN, TokenTypes.BSR, TokenTypes.BXOR_ASSIGN, TokenTypes.BXOR, TokenTypes.DIV_ASSIGN,
 				TokenTypes.MINUS_ASSIGN, TokenTypes.MOD_ASSIGN, TokenTypes.PLUS_ASSIGN, TokenTypes.SL,
 				TokenTypes.SL_ASSIGN, TokenTypes.BNOT, TokenTypes.SR_ASSIGN, TokenTypes.SR, TokenTypes.STAR_ASSIGN,
-				TokenTypes.INC, TokenTypes.POST_INC, TokenTypes.DEC, TokenTypes.POST_DEC };
+				TokenTypes.INC, TokenTypes.POST_INC, TokenTypes.DEC, TokenTypes.POST_DEC, TokenTypes.LITERAL_DEFAULT };
 	}
 
 	private int[] operandTokens() {
@@ -199,15 +137,14 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 				TokenTypes.IDENT };
 	}
 
-	private void increaseCounts(DetailAST ast) {
-		//variableCount += ast.getChildCount(TokenTypes.VARIABLE_DEF);
-		operatorsCount += countOperators(ast);
-		operandsCount += countOperands(ast);
-	}
-
 	private int countOperators(DetailAST ast) {
 		if (ast.getChildCount() > 0) {
 			int count = 0;
+
+			// Count default as normal pathing.
+			if (ast.getType() == TokenTypes.LITERAL_IF || ast.getType() == TokenTypes.LITERAL_CASE) {
+				cycTotal++;
+			}
 
 			for (int n : operatorTokens()) {
 				count += ast.getChildCount(n);
@@ -232,9 +169,19 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 	private int countOperands(DetailAST ast) {
 		if (ast.getChildCount() > 0) {
 			int count = 0;
+			int temp = 0;
 
+			// This gross thing cause duplicate global variables aren't unique
 			for (int n : operandTokens()) {
-				count += ast.getChildCount(n);
+				temp = ast.getChildCount(n);
+				if (temp > 0) {
+					if (temp == TokenTypes.IDENT) {
+						if (!globalVariables.contains(ast.getText())) {
+							uniqueOperands++;
+						}
+					}
+					count += temp;
+				}
 			}
 
 			DetailAST child = ast.getFirstChild();
