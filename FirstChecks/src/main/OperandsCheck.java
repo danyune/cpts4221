@@ -29,7 +29,7 @@ public class OperandsCheck extends AbstractCheck {
 
 	@Override
 	public void finishTree(DetailAST ast) {
-		String catchMsg = "Number of Operands: ";
+		String catchMsg = "Solo Number of Operands: ";
 		log(ast.getLineNo(), catchMsg + operandCount);
 	}
 
