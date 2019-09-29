@@ -35,5 +35,19 @@
 			<description>%LoopsCheck.desc</description>
 		</rule-metadata>
 		
+		<rule-metadata name="%LinesOfCommentsCheck.name"
+			internal-name="LinesOfComments" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.LinesOfCommentsCheck" />
+			<description>%LinesOfCommentsCheck.desc</description>
+		</rule-metadata>
+		
+		<rule-metadata name="%TotalCommentsCheck.name"
+			internal-name="TotalComments" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.TotalCommentsCheck" />
+			<description>%TotalCommentsCheck.desc</description>
+		</rule-metadata>
+		
 	</rule-group-metadata>
 </checkstyle-metadata>
