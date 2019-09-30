@@ -54,12 +54,19 @@
 			<description>%ExpressionsCheck.desc</description>
 		</rule-metadata>
 
-		<rule-metadata name="MethodCallsLol"
-			internal-name="MethodCalls" parent="TreeWalker">
-			<alternative-name internal-name="main.MethodCalls" />
-			<description>%MethodCalls.desc</description>
+		<rule-metadata name="%LocalMethodsCheck.name"
+			internal-name="LocalMethods" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.LocalMethodsCheck" />
+			<description>%LocalMethodsCheck.desc</description>
 		</rule-metadata>
 
+		<rule-metadata name="%ExternalMethodsCheck.name"
+			internal-name="ExternalMethods" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.ExternalMethodsCheck" />
+			<description>%ExternalMethodsCheck.desc</description>
+		</rule-metadata>
 
 	</rule-group-metadata>
 </checkstyle-metadata>

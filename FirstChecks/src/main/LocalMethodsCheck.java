@@ -1,19 +1,15 @@
 package main;
 
+import java.util.Arrays;
+
 import com.puppycrawl.tools.checkstyle.api.*;
 
-public class MethodCalls extends AbstractCheck {
+public class LocalMethodsCheck extends AbstractCheck {
 	private int localMethods = 0;
-	private int externalMethods = 0;
 
 	@Override
 	public int[] getRequiredTokens() {
 		return new int[0];
-	}
-
-	@Override
-	public boolean isCommentNodesRequired() {
-		return true;
 	}
 
 	@Override
@@ -29,18 +25,16 @@ public class MethodCalls extends AbstractCheck {
 	@Override
 	public void beginTree(DetailAST ast) {
 		localMethods = 0;
-		externalMethods = 0;
 	}
 
 	@Override
 	public void finishTree(DetailAST ast) {
-		log(ast.getLineNo(), "Local Methods: " + localMethods);
-		log(ast.getLineNo(), "External Methods: " + externalMethods);
+		String catchMsg = "Number of local method references: ";
+		log(ast.getLineNo(), catchMsg + localMethods);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
-
 		while (ast != null) {
 			if (ast.getChildCount() > 0) {
 				// Global operands
@@ -55,18 +49,13 @@ public class MethodCalls extends AbstractCheck {
 	}
 
 	private void countTokens(DetailAST ast) {
-
+		// If the class has anything in it first
 		if (ast.getChildCount() > 0) {
 			if (ast.getType() == TokenTypes.METHOD_CALL) {
 				if (ast.getChildCount(TokenTypes.DOT) > 0) {
 					if (ast.findFirstToken(TokenTypes.DOT).branchContains(TokenTypes.LITERAL_THIS)) {
 						localMethods++;
-					} else {
-						externalMethods++;
 					}
-
-				} else {
-					localMethods++;
 				}
 			}
 
