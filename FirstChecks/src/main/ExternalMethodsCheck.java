@@ -1,11 +1,9 @@
 package main;
 
-import java.util.Arrays;
-
 import com.puppycrawl.tools.checkstyle.api.*;
 
-public class LocalMethodsCheck extends AbstractCheck {
-	private int localMethods = 0;
+public class ExternalMethodsCheck extends AbstractCheck{
+	private int externalMethods = 0;
 
 	@Override
 	public int[] getRequiredTokens() {
@@ -24,36 +22,38 @@ public class LocalMethodsCheck extends AbstractCheck {
 
 	@Override
 	public void beginTree(DetailAST ast) {
-		localMethods = 0;
+		externalMethods = 0;
 	}
 
 	@Override
 	public void finishTree(DetailAST ast) {
-		String catchMsg = "Number of local method references: ";
-		log(ast.getLineNo(), catchMsg + localMethods);
+		String catchMsg = "Number of external method references: ";
+		log(ast.getLineNo(), catchMsg + externalMethods);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
 		while (ast != null) {
-            if (ast.getChildCount() > 0) {
-                // Global operands
-                DetailAST child = ast.getFirstChild();
-                while (child != null) {
-                    countTokens(child);
-                    child = child.getNextSibling();
-                }
-            }
-            ast = ast.getNextSibling();
-        }
+			if (ast.getChildCount() > 0) {
+				// Global operands
+				DetailAST child = ast.getFirstChild();
+				while (child != null) {
+					countTokens(child);
+					child = child.getNextSibling();
+				}
+			}
+			ast = ast.getNextSibling();
+		}
 	}
 
 	private void countTokens(DetailAST ast) {
 		// If the class has anything in it first
 		if (ast.getChildCount() > 0) {
 			if (ast.getType() == TokenTypes.METHOD_CALL) {
-				if (ast.findFirstToken(TokenTypes.DOT).branchContains(TokenTypes.LITERAL_THIS)) {
-					localMethods++;
+				if (!(ast.findFirstToken(TokenTypes.DOT).branchContains(TokenTypes.LITERAL_THIS))) {
+					
+				//} else {
+					externalMethods++;
 				}
 			}
 

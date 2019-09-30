@@ -27,6 +27,13 @@
 				internal-name="main.LocalMethodsCheck" />
 			<description>%LocalMethodsCheck.desc</description>
 		</rule-metadata>
+
+		<rule-metadata name="%ExternalMethodsCheck.name"
+			internal-name="ExternalMethods" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.ExternalMethodsCheck" />
+			<description>%ExternalMethodsCheck.desc</description>
+		</rule-metadata>
 		
 		<rule-metadata name="%LoopsCheck.name"
 			internal-name="Loops" parent="TreeWalker">
