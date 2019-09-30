@@ -36,6 +36,21 @@ public class LocalMethodsCheck extends AbstractCheck {
 	@Override
 	public void visitToken(DetailAST ast) {
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
+		
+		if (objBlock.getChildCount() > 0) {
+			// Global operands
+			DetailAST child = objBlock.getFirstChild();
+
+			while (child != null) {
+				if (ast.getType() == TokenTypes.METHOD_CALL) {
+					if ((!ast.branchContains(TokenTypes.DOT)) && ast.getType() == TokenTypes.LITERAL_THIS) {
+						localMethods++;
+					}
+				}
+				child = child.getNextSibling();
+			}
+		}
+
 		Arrays.stream(tokenTypes()).forEach(x -> localMethods += countTokens(objBlock, x));
 	}
 
@@ -47,7 +62,7 @@ public class LocalMethodsCheck extends AbstractCheck {
 		// If the class has anything in it first
 		if (ast.getChildCount() > 0) {
 			int count = 0;
-			count += ast.getChildCount(tokenTypes);
+			//count += ast.getChildCount(tokenTypes);
 
 			// Find first child, assuming first method
 			DetailAST child = ast.getFirstChild();
