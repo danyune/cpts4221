@@ -76,20 +76,20 @@ public class VariablesCheck extends AbstractCheck {
 
 	@Override
 	public void beginTree(DetailAST ast) {
-		variablesCount = 0;
+		setVariablesCount(0);
 	}
 
 	@Override
 	public void finishTree(DetailAST ast) {
 		
 		String catchMsg = "Number of Variables: ";
-		log(ast.getLineNo(), catchMsg + variablesCount);
+		log(ast.getLineNo(), catchMsg + getVariablesCount());
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
-		Arrays.stream(tokenTypes()).forEach(x -> variablesCount += countTokens(objBlock, x));
+		Arrays.stream(tokenTypes()).forEach(x -> setVariablesCount(getVariablesCount() + countTokens(objBlock, x)));
 	}
 
 	private int[] tokenTypes() {
@@ -116,5 +116,14 @@ public class VariablesCheck extends AbstractCheck {
 		} else {
 			return 0;
 		}
+	}
+
+	public int getVariablesCount() {
+		return variablesCount;
+	}
+
+	public int setVariablesCount(int variablesCount) {
+		this.variablesCount = variablesCount;
+		return variablesCount;
 	}
 }
