@@ -30,20 +30,20 @@ public class TotalCommentsCheck extends AbstractCheck {
 
 	@Override
 	public void beginTree(DetailAST ast) {
-		commentLines = 0;
+		setCommentLines(0);
 	}
 
 	@Override
 	public void finishTree(DetailAST ast) {
 		
 		String catchMsg = "Total Comments: ";
-		log(ast.getLineNo(), catchMsg + commentLines);
+		log(ast.getLineNo(), catchMsg + getCommentLines());
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
 		DetailAST objBlock = ast.findFirstToken(TokenTypes.COMMENT_CONTENT);
-		Arrays.stream(tokenTypes()).forEach(x -> commentLines += countTokens(objBlock, x));
+		Arrays.stream(tokenTypes()).forEach(x -> setCommentLines(getCommentLines() + countTokens(objBlock, x)));
 	}
 
 	private int[] tokenTypes() {
@@ -53,5 +53,14 @@ public class TotalCommentsCheck extends AbstractCheck {
 	private int countTokens(DetailAST ast, int tokenTypes) {
 
 		return 1;
+	}
+
+	public int getCommentLines() {
+		return commentLines;
+	}
+
+	public int setCommentLines(int commentLines) {
+		this.commentLines = commentLines;
+		return commentLines;
 	}
 }
