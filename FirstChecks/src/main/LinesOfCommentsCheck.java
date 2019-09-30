@@ -20,12 +20,12 @@ public class LinesOfCommentsCheck extends AbstractCheck {
 
 	@Override
 	public int[] getAcceptableTokens() {
-		return new int[] { TokenTypes.COMMENT_CONTENT };
+		return new int[] { TokenTypes.COMMENT_CONTENT, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.BLOCK_COMMENT_END};
 	}
 
 	@Override
 	public int[] getDefaultTokens() {
-		return new int[] { TokenTypes.COMMENT_CONTENT };
+		return new int[] { TokenTypes.COMMENT_CONTENT, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.BLOCK_COMMENT_END};
 	}
 
 	@Override
@@ -47,11 +47,29 @@ public class LinesOfCommentsCheck extends AbstractCheck {
 	}
 
 	private int[] tokenTypes() {
-		return new int[] {TokenTypes.COMMENT_CONTENT};
+		return new int[] {TokenTypes.COMMENT_CONTENT, TokenTypes.BLOCK_COMMENT_BEGIN };
 	}
 
 	private int countTokens(DetailAST ast, int tokenTypes) {
-
-		return 1;
+	
+		if (tokenTypes == TokenTypes.BLOCK_COMMENT_BEGIN) {
+			int lines = 0;
+			boolean commentBlock = true;
+			
+			while(commentBlock) {
+				if(tokenTypes != TokenTypes.BLOCK_COMMENT_END) {
+					ast = ast.getNextSibling();
+					lines++;
+				}
+				else {
+					commentBlock = false;
+				}
+			}
+			
+			return lines;
+		}
+		else {
+			return 1;
+		}
 	}
 }
