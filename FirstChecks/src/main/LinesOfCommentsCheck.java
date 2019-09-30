@@ -1,75 +1,90 @@
 package main;
-
-import java.util.Arrays;
-
+ 
 import com.puppycrawl.tools.checkstyle.api.*;
-
+ 
 public class LinesOfCommentsCheck extends AbstractCheck {
-	
-	private int commentLines = 0;
-
-	@Override
-	public int[] getRequiredTokens() {
-		return new int[0];
-	}
-	
-	@Override
-	public boolean isCommentNodesRequired() {
-		return true;
-	}
-
-	@Override
-	public int[] getAcceptableTokens() {
-		return new int[] { TokenTypes.COMMENT_CONTENT, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.BLOCK_COMMENT_END};
-	}
-
-	@Override
-	public int[] getDefaultTokens() {
-		return new int[] { TokenTypes.COMMENT_CONTENT, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.BLOCK_COMMENT_END};
-	}
-
-	@Override
-	public void beginTree(DetailAST ast) {
-		commentLines = 0;
-	}
-
-	@Override
-	public void finishTree(DetailAST ast) {
-		
-		String catchMsg = "Lines of Comments: ";
-		log(ast.getLineNo(), catchMsg + commentLines);
-	}
-
-	@Override
-	public void visitToken(DetailAST ast) {
-		DetailAST objBlock = ast.findFirstToken(TokenTypes.COMMENT_CONTENT);
-		Arrays.stream(tokenTypes()).forEach(x -> commentLines += countTokens(objBlock, x));
-	}
-
-	private int[] tokenTypes() {
-		return new int[] {TokenTypes.COMMENT_CONTENT, TokenTypes.BLOCK_COMMENT_BEGIN };
-	}
-
-	private int countTokens(DetailAST ast, int tokenTypes) {
-	
-		if (tokenTypes == TokenTypes.BLOCK_COMMENT_BEGIN) {
-			int lines = 0;
-			boolean commentBlock = true;
-			
-			while(commentBlock) {
-				if(tokenTypes != TokenTypes.BLOCK_COMMENT_END) {
-					ast = ast.getNextSibling();
-					lines++;
-				}
-				else {
-					commentBlock = false;
-				}
-			}
-			
-			return lines;
-		}
-		else {
-			return 1;
-		}
-	}
+    private int singleComment = 0;
+    private int multiComment = 0;
+ 
+    @Override
+    public int[] getRequiredTokens() {
+        return new int[0];
+    }
+ 
+    @Override
+    public boolean isCommentNodesRequired() {
+        return true;
+    }
+ 
+    @Override
+    public int[] getAcceptableTokens() {
+        return new int[] { TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF };
+    }
+ 
+    @Override
+    public int[] getDefaultTokens() {
+        return new int[] { TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF };
+    }
+ 
+    @Override
+    public void beginTree(DetailAST ast) {
+        singleComment = 0;
+        multiComment = 0;
+    }
+ 
+    @Override
+    public void finishTree(DetailAST ast) {
+    	log(ast.getLineNo(), "Lines of Comments: " + (singleComment + multiComment));
+        //log(ast.getLineNo(), "Single Comments: " + singleComment);
+        //log(ast.getLineNo(), "Block Comments: " + multiComment);
+    }
+ 
+    @Override
+    public void visitToken(DetailAST ast) {
+        if (ast.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN) != null) {
+            // To account for the /*
+            multiComment++;
+            multiComment += ast.findFirstToken(TokenTypes.BLOCK_COMMENT_END).getLineNo() - ast.getLineNo();
+        }
+ 
+        if (ast.findFirstToken(TokenTypes.SINGLE_LINE_COMMENT) != null) {
+            singleComment++;
+        }
+ 
+        while (ast != null) {
+            if (ast.getChildCount() > 0) {
+                // Global operands
+                DetailAST child = ast.getFirstChild();
+                while (child != null) {
+                    countTokens(child);
+                    child = child.getNextSibling();
+                }
+            }
+            ast = ast.getNextSibling();
+        }
+    }
+ 
+    private void countTokens(DetailAST ast) {
+ 
+        if (ast.getChildCount() > 0) {
+            if (ast.getType() == TokenTypes.SINGLE_LINE_COMMENT) {
+                singleComment++;
+            }
+ 
+            if (ast.getType() == TokenTypes.BLOCK_COMMENT_BEGIN) {
+                // To account for the /*
+                multiComment++;
+                multiComment += ast.findFirstToken(TokenTypes.BLOCK_COMMENT_END).getLineNo() - ast.getLineNo();
+            }
+ 
+            // Find first child, assuming first method
+            DetailAST child = ast.getFirstChild();
+ 
+            // Keep checking each method until we have no more
+            while (child != null) {
+                countTokens(child);
+                child = child.getNextSibling();
+            }
+        }
+    }
 }
