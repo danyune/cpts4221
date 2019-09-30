@@ -7,25 +7,11 @@
 		priority="1600">
 		<description>%FirstChecks.desc</description>
 
-		<rule-metadata name="%OperatorsCheck.name"
-			internal-name="Operators" parent="TreeWalker">
-			<alternative-name
-				internal-name="main.OperatorsCheck" />
-			<description>%OperatorsCheck.desc</description>
-		</rule-metadata>
-
 		<rule-metadata name="%VariablesCheck.name"
 			internal-name="Variables" parent="TreeWalker">
 			<alternative-name
 				internal-name="main.VariablesCheck" />
 			<description>%VariablesCheck.desc</description>
-		</rule-metadata>
-
-		<rule-metadata name="%LocalMethodsCheck.name"
-			internal-name="LocalMethods" parent="TreeWalker">
-			<alternative-name
-				internal-name="main.LocalMethodsCheck" />
-			<description>%LocalMethodsCheck.desc</description>
 		</rule-metadata>
 
 		<rule-metadata name="%LoopsCheck.name"
@@ -40,12 +26,6 @@
 			<description>%CastsCheck.desc</description>
 		</rule-metadata>
 
-		<rule-metadata name="%OperandsCheck.name"
-			internal-name="Operands" parent="TreeWalker">
-			<alternative-name internal-name="main.OperandsCheck" />
-			<description>%OperandCheck.desc</description>
-		</rule-metadata>
-
 		<rule-metadata name="HalsteadMetricsCheck.name"
 			internal-name="HalsteadMetrics" parent="TreeWalker">
 			<alternative-name
@@ -53,11 +33,27 @@
 			<description>%HalsteadMetricsCheck.desc</description>
 		</rule-metadata>
 
-		<rule-metadata name="CommentsCheck.name"
-			internal-name="Comments" parent="TreeWalker">
-			<alternative-name internal-name="main.CommentsCheck" />
-			<description>%CommentsCheck.desc</description>
+		<rule-metadata name="%LinesOfCommentsCheck.name"
+			internal-name="LinesOfComments" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.LinesOfCommentsCheck" />
+			<description>%LinesOfCommentsCheck.desc</description>
 		</rule-metadata>
+		
+		<rule-metadata name="%TotalCommentsCheck.name"
+			internal-name="TotalComments" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.TotalCommentsCheck" />
+			<description>%TotalCommentsCheck.desc</description>
+		</rule-metadata>
+		
+				<rule-metadata name="ExpressionsCheck.name"
+			internal-name="Expressions" parent="TreeWalker">
+			<alternative-name
+				internal-name="main.ExpressionsCheck" />
+			<description>%ExpressionsCheck.desc</description>
+		</rule-metadata>
+
 
 	</rule-group-metadata>
 </checkstyle-metadata>

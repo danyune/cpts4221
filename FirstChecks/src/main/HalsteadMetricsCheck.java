@@ -1,6 +1,5 @@
 package main;
 
-import java.math.BigInteger;
 import java.util.*;
 
 import com.puppycrawl.tools.checkstyle.api.*;
