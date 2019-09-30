@@ -53,5 +53,11 @@
 			<description>%HalsteadMetricsCheck.desc</description>
 		</rule-metadata>
 
+		<rule-metadata name="CommentsCheck.name"
+			internal-name="Comments" parent="TreeWalker">
+			<alternative-name internal-name="main.CommentsCheck" />
+			<description>%CommentsCheck.desc</description>
+		</rule-metadata>
+
 	</rule-group-metadata>
 </checkstyle-metadata>
