@@ -39,19 +39,25 @@
 				internal-name="main.LinesOfCommentsCheck" />
 			<description>%LinesOfCommentsCheck.desc</description>
 		</rule-metadata>
-		
+
 		<rule-metadata name="%TotalCommentsCheck.name"
 			internal-name="TotalComments" parent="TreeWalker">
 			<alternative-name
 				internal-name="main.TotalCommentsCheck" />
 			<description>%TotalCommentsCheck.desc</description>
 		</rule-metadata>
-		
-				<rule-metadata name="ExpressionsCheck.name"
+
+		<rule-metadata name="ExpressionsCheck.name"
 			internal-name="Expressions" parent="TreeWalker">
 			<alternative-name
 				internal-name="main.ExpressionsCheck" />
 			<description>%ExpressionsCheck.desc</description>
+		</rule-metadata>
+
+		<rule-metadata name="MethodCallsLol"
+			internal-name="MethodCalls" parent="TreeWalker">
+			<alternative-name internal-name="main.MethodCalls" />
+			<description>%MethodCalls.desc</description>
 		</rule-metadata>
 
 
