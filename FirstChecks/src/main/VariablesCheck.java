@@ -6,57 +6,6 @@ import com.puppycrawl.tools.checkstyle.api.*;
 
 // Implemented using the Boat Anchor AntiPattern
 public class VariablesCheck extends AbstractCheck {
-	
-	// Serves no useful purpose in this project
-	public class BinarySearchTree {
-
-		public class Node {
-			int key;
-			Node left, right;
-			
-			public Node(int item) {
-				key = item;
-				right = left = null;
-			}
-		}
-		
-		Node root;
-		
-		BinarySearchTree(){
-			root = null;
-		}
-		
-		void insert(int key) {
-			root = insert(root, key);
-		}
-		
-		Node insert(Node root, int key) {
-	        if (root == null) { 
-	            root = new Node(key); 
-	            return root; 
-	        } 
-	  
-	        if (key < root.key) 
-	            root.left = insert(root.left, key); 
-	        else if (key > root.key) 
-	            root.right = insert(root.right, key); 
-	  
-	        return root; 
-		}
-		
-		void inorderTraversal() {
-			inorderTraversal(root);
-		}
-		
-		void inorderTraversal(Node root) {
-			if (root != null) {
-				inorderTraversal(root.left);
-				System.out.println(root.key);
-				inorderTraversal(root.right);
-			}
-		}
-	}
-	
 	private int variablesCount = 0;
 
 	@Override

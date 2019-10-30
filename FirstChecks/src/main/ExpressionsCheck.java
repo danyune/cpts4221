@@ -1,11 +1,10 @@
 package main;
 
-import java.util.Arrays;
-
 import com.puppycrawl.tools.checkstyle.api.*;
 
 public class ExpressionsCheck extends AbstractCheck {
 	private int expressions = 0;
+	private String logMsg = "Number of Expressions: ";
 
 	@Override
 	public int[] getRequiredTokens() {
@@ -29,21 +28,18 @@ public class ExpressionsCheck extends AbstractCheck {
 
 	@Override
 	public void finishTree(DetailAST ast) {
-		// Edit what you want the warning area to display
-
-		String catchMsg = "Number of Expressions: ";
-		log(ast.getLineNo(), catchMsg + expressions);
+		log(ast.getLineNo(), logMsg + expressions);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
-//		DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
 		countTokens(ast);
 	}
 
 	private void countTokens(DetailAST ast) {
 		// If the class has anything in it first
 		if (ast.getChildCount() > 0) {
+
 			expressions += ast.getChildCount(TokenTypes.EXPR);
 
 			// Find first child, assuming first method

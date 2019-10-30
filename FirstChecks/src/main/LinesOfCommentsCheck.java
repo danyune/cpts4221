@@ -34,6 +34,8 @@ public class LinesOfCommentsCheck extends AbstractCheck {
  
     @Override
     public void finishTree(DetailAST ast) {
+    	
+    	// Start and ending blocks count as a line even with no content
     	log(ast.getLineNo(), "Lines of Comments: " + (singleComment + multiComment));
         //log(ast.getLineNo(), "Single Comments: " + singleComment);
         //log(ast.getLineNo(), "Block Comments: " + multiComment);

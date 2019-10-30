@@ -2,7 +2,7 @@ package main;
 
 import com.puppycrawl.tools.checkstyle.api.*;
 
-public class ExternalMethodsCheck extends AbstractCheck{
+public class ExternalMethodsCheck extends AbstractCheck {
 	private int externalMethods = 0;
 
 	@Override
@@ -51,8 +51,6 @@ public class ExternalMethodsCheck extends AbstractCheck{
 		if (ast.getChildCount() > 0) {
 			if (ast.getType() == TokenTypes.METHOD_CALL) {
 				if (!(ast.findFirstToken(TokenTypes.DOT).branchContains(TokenTypes.LITERAL_THIS))) {
-					
-				//} else {
 					externalMethods++;
 				}
 			}

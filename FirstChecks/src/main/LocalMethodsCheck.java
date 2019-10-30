@@ -56,6 +56,8 @@ public class LocalMethodsCheck extends AbstractCheck {
 					if (ast.findFirstToken(TokenTypes.DOT).branchContains(TokenTypes.LITERAL_THIS)) {
 						localMethods++;
 					}
+				} else {
+					localMethods++;
 				}
 			}
 

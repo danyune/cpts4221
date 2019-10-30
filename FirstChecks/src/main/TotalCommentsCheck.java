@@ -36,6 +36,7 @@ public class TotalCommentsCheck extends AbstractCheck {
 	@Override
 	public void finishTree(DetailAST ast) {
 		
+		// the beginning and end block of comments without any content does not count
 		String catchMsg = "Total Comments: ";
 		log(ast.getLineNo(), catchMsg + commentLines);
 	}
