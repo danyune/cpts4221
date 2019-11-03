@@ -1,11 +1,9 @@
 # CptS 422
 
-Deliverable 1: 4 metrics implemented
+Deliverable 3: All metrics done, test cases done, documentation in progress.
 
-Daniel - Operators Count
+Daniel: Main test writer
 
-Rebecca - Variables Count
+Brandon and Juan: White Box documentation and charts
 
-Juan - Loops Count
-
-Brandon - Type Cast Count
+Rebecca: Black Box documentation and charts
