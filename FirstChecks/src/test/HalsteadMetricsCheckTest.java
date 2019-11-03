@@ -62,12 +62,12 @@ class HalsteadMetricsCheckTest extends AbstractModuleTestSupport {
 		String[] results = { 
 				"1: Halstead Difficulty: 14.571428571428571",
 				"1: Halstead Effort: 8029.329095568684",
-				"1: Halstead Length: 53",
-				"1: Halstead Vocabulary: 18",
-				"1: Halstead Volume: 221.00602507644254",
-				"1: Maintainability Index: 55.30630965643668",
-				"1: Number of Operands: 17",
-				"1: Number of Operators: 36"
+				"1: Halstead Length: 105",
+				"1: Halstead Vocabulary: 38",
+				"1: Halstead Volume: 551.0323889115764",
+				"1: Maintainability Index: 34.05604256266409",
+				"1: Number of Operands: 36",
+				"1: Number of Operators: 69"
 				};
 		verify(dc, fileToTest, results);
 	}

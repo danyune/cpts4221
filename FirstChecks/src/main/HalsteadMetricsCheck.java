@@ -63,8 +63,7 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 		// Not doing comments lol f adding more
 		double maintainabilityIndex = (171 - (5.2 * (Math.log(halsteadVolume) / Math.log(2)))) - (0.23 * cycTotal)
 				- (16.2 * (Math.log(getLines().length) / Math.log(2)));
-		log(ast.getLineNo(), "Unique Operators: " + uniqueOperators);
-		log(ast.getLineNo(), "Unique Operands: " + uniqueOperands);
+		
 		log(ast.getLineNo(), "Number of Operators: " + operatorsCount);
 		log(ast.getLineNo(), "Number of Operands: " + operandsCount);
 		log(ast.getLineNo(), "Halstead Length: " + halsteadLength);
