@@ -43,27 +43,7 @@ public class LinesOfCommentsCheck extends AbstractCheck {
  
     @Override
     public void visitToken(DetailAST ast) {
-        if (ast.findFirstToken(TokenTypes.BLOCK_COMMENT_BEGIN) != null) {
-            // To account for the /*
-            multiComment++;
-            multiComment += ast.findFirstToken(TokenTypes.BLOCK_COMMENT_END).getLineNo() - ast.getLineNo();
-        }
- 
-        if (ast.findFirstToken(TokenTypes.SINGLE_LINE_COMMENT) != null) {
-            singleComment++;
-        }
- 
-        while (ast != null) {
-            if (ast.getChildCount() > 0) {
-                // Global operands
-                DetailAST child = ast.getFirstChild();
-                while (child != null) {
-                    countTokens(child);
-                    child = child.getNextSibling();
-                }
-            }
-            ast = ast.getNextSibling();
-        }
+    	countTokens(ast);
     }
  
     private void countTokens(DetailAST ast) {

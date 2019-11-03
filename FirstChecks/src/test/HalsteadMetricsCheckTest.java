@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 import com.puppycrawl.tools.checkstyle.*;
@@ -61,8 +60,8 @@ class HalsteadMetricsCheckTest extends AbstractModuleTestSupport {
 		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
 		String fileToTest = getPackageLocation() + "HalsteadMetricsCheckTestCode.java";
 		String[] results = { 
-				"1: Halstead Difficulty: 144.5",
-				"1: Halstead Effort: 31935.370623545947",
+				"1: Halstead Difficulty: 14.571428571428571",
+				"1: Halstead Effort: 8029.329095568684",
 				"1: Halstead Length: 53",
 				"1: Halstead Vocabulary: 18",
 				"1: Halstead Volume: 221.00602507644254",

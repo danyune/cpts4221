@@ -11,6 +11,7 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 	private int uniqueOperands = 0;
 	private int cycTotal = 1;
 	private List<String> globalVariables = new ArrayList<String>();
+	private List<String> tempList = new ArrayList<String>();
 
 	@Override
 	public int[] getRequiredTokens() {
@@ -35,6 +36,7 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 		uniqueOperands = 0;
 		cycTotal = 1;
 		globalVariables.clear();
+		tempList.clear();
 	}
 
 	@Override
@@ -61,9 +63,8 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 		// Not doing comments lol f adding more
 		double maintainabilityIndex = (171 - (5.2 * (Math.log(halsteadVolume) / Math.log(2)))) - (0.23 * cycTotal)
 				- (16.2 * (Math.log(getLines().length) / Math.log(2)));
-
-		int countLines = getLines().length;
-
+		log(ast.getLineNo(), "Unique Operators: " + uniqueOperators);
+		log(ast.getLineNo(), "Unique Operands: " + uniqueOperands);
 		log(ast.getLineNo(), "Number of Operators: " + operatorsCount);
 		log(ast.getLineNo(), "Number of Operands: " + operandsCount);
 		log(ast.getLineNo(), "Halstead Length: " + halsteadLength);
@@ -84,37 +85,29 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 				uniqueOperators++;
 			}
 		}
-		for (int n : operandTokens()) {
-			if (n != TokenTypes.IDENT) {
-				if (objBlock.branchContains(n)) {
-					uniqueOperands++;
-				}
+		
+		// Global operands
+		DetailAST child = objBlock.getFirstChild();
+
+		while (child != null) {
+			if (child.getType() == TokenTypes.VARIABLE_DEF) {
+				globalVariables.add(child.findFirstToken(TokenTypes.IDENT).getText());
+				tempList.add(child.findFirstToken(TokenTypes.IDENT).getText());
+				uniqueOperands++;
+				operandsCount++;
+				operandsCount += countOperands(child);
+				operatorsCount += countOperators(child);
 			}
+			if (child.getType() == TokenTypes.METHOD_DEF) {
+				// Add one for the open curly bracket for the statement list
+				operatorsCount++;
+				operandsCount += countOperands(child.findFirstToken(TokenTypes.SLIST));
+				operatorsCount += countOperators(child.findFirstToken(TokenTypes.SLIST));
+				tempList.clear();
+			}
+			child = child.getNextSibling();
 		}
 
-		if (objBlock.getChildCount() > 0) {
-			// Global operands
-			DetailAST child = objBlock.getFirstChild();
-
-			while (child != null) {
-				if (child.getType() == TokenTypes.VARIABLE_DEF) {
-					globalVariables.add(child.findFirstToken(TokenTypes.IDENT).getText());
-					uniqueOperands++;
-					operandsCount++;
-					operandsCount += countOperands(child);
-					operatorsCount += countOperators(child);
-				}
-				if (child.getType() == TokenTypes.METHOD_DEF) {
-					if (child.getChildCount(TokenTypes.SLIST) > 0) {
-						// Add one for the open curly bracket for the statement list
-						operatorsCount++;
-						operandsCount += countOperands(child.findFirstToken(TokenTypes.SLIST));
-						operatorsCount += countOperators(child.findFirstToken(TokenTypes.SLIST));
-					}
-				}
-				child = child.getNextSibling();
-			}
-		}
 	}
 
 	private int[] operatorTokens() {
@@ -174,10 +167,15 @@ public class HalsteadMetricsCheck extends AbstractCheck {
 			for (int n : operandTokens()) {
 				temp = ast.getChildCount(n);
 				if (temp > 0) {
-					if (temp == TokenTypes.IDENT) {
-						if (!globalVariables.contains(ast.getText())) {
-							uniqueOperands++;
+					DetailAST child = ast.getFirstChild();
+					while (child != null) {
+						if (child.getType() == TokenTypes.IDENT) {
+							if (!globalVariables.contains(child.getText()) || !tempList.contains(child.getText())) {
+								uniqueOperands++;
+								tempList.add(child.getText());
+							}
 						}
+						child = child.getNextSibling();
 					}
 					count += temp;
 				}
