@@ -46,7 +46,6 @@ public class LocalMethodsCheck extends AbstractCheck {
 			}
 			ast = ast.getNextSibling();
 		}
-		countTokens(ast);
 	}
 
 	private void countTokens(DetailAST ast) {

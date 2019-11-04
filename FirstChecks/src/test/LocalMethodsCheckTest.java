@@ -52,6 +52,15 @@ class LocalMethodsCheckTest extends AbstractModuleTestSupport {
 	    Mockito.verify(localMethodsCheck, times(1)).finishTree(ast);
 	}
 
+	// Test opening a file that does not exist
+	@Test
+	public void fileDoesNotExistTest() throws Exception {
+		DefaultConfiguration dc = createModuleConfig(LocalMethodsCheck.class);
+		String fileToTest = getPackageLocation() + "FakeFile.java";
+		String result = "1: Got an exception - " + fileToTest + " (No such file or directory)";
+		verify(dc, fileToTest, result);
+	}
+	
 	// Actually test the check
 	@Test
 	public void localMethodsCountTest() throws Exception {

@@ -11,6 +11,8 @@ import static org.mockito.Mockito.*;
 
 import com.puppycrawl.tools.checkstyle.*;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+
+import main.HalsteadMetricsCheck;
 import main.LinesOfCommentsCheck;
 
 class LinesOfCommentsCheckTest extends AbstractModuleTestSupport {
@@ -59,6 +61,15 @@ class LinesOfCommentsCheckTest extends AbstractModuleTestSupport {
 		assertTrue(linesOfCommentsCheck.isCommentNodesRequired());
 	}
 
+	// Test opening a file that does not exist
+	@Test
+	public void fileDoesNotExistTest() throws Exception {
+		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
+		String fileToTest = getPackageLocation() + "FakeFile.java";
+		String result = "1: Got an exception - " + fileToTest + " (No such file or directory)";
+		verify(dc, fileToTest, result);
+	}
+	
 	// Actually test the check
 	@Test
 	public void externalMethodsCountTest() throws Exception {
@@ -66,7 +77,7 @@ class LinesOfCommentsCheckTest extends AbstractModuleTestSupport {
 		// Test the actual running of the check
 		DefaultConfiguration dc = createModuleConfig(LinesOfCommentsCheck.class);
 		String fileToTest = getPackageLocation() + "LinesOfCommentsCheckTestCode.java";
-		String result = "1: Lines of Comments: 6";
+		String result = "1: Lines of Comments: 11";
 		verify(dc, fileToTest, result);
 	}
 

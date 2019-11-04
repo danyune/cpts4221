@@ -10,6 +10,8 @@ import static org.mockito.Mockito.*;
 
 import com.puppycrawl.tools.checkstyle.*;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+
+import main.HalsteadMetricsCheck;
 import main.LoopsCheck;
 
 class LoopsCheckTest extends AbstractModuleTestSupport {
@@ -52,6 +54,15 @@ class LoopsCheckTest extends AbstractModuleTestSupport {
 	    Mockito.verify(loopsCheck, times(1)).finishTree(ast);
 	}
 
+	// Test opening a file that does not exist
+	@Test
+	public void fileDoesNotExistTest() throws Exception {
+		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
+		String fileToTest = getPackageLocation() + "FakeFile.java";
+		String result = "1: Got an exception - " + fileToTest + " (No such file or directory)";
+		verify(dc, fileToTest, result);
+	}
+	
 	// Actually test the check
 	@Test
 	public void externalMethodsCountTest() throws Exception {
@@ -59,7 +70,7 @@ class LoopsCheckTest extends AbstractModuleTestSupport {
 		// Test the actual running of the check
 		DefaultConfiguration dc = createModuleConfig(LoopsCheck.class);
 		String fileToTest = getPackageLocation() + "LoopsCheckTestCode.java";
-		String result = "1: Number of Loops: 3";
+		String result = "1: Number of Loops: 6";
 		verify(dc, fileToTest, result);
 	}
 

@@ -8,7 +8,7 @@ public class ExpressionsCheck extends AbstractCheck {
 
 	@Override
 	public int[] getRequiredTokens() {
-		return new int[0];
+		 return new int[0];
 	}
 
 	@Override

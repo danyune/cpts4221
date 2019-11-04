@@ -11,6 +11,7 @@ import static org.mockito.Mockito.*;
 import com.puppycrawl.tools.checkstyle.*;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import main.ExpressionsCheck;
+import main.HalsteadMetricsCheck;
 
 class ExpressionsCheckTest extends AbstractModuleTestSupport {
 	// Check if the elements in the arrays are ok
@@ -52,6 +53,15 @@ class ExpressionsCheckTest extends AbstractModuleTestSupport {
 	    Mockito.verify(expressionsCheck, times(1)).finishTree(ast);
 	}
 
+	// Test opening a file that does not exist
+	@Test
+	public void fileDoesNotExistTest() throws Exception {
+		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
+		String fileToTest = getPackageLocation() + "FakeFile.java";
+		String result = "1: Got an exception - " + fileToTest + " (No such file or directory)";
+		verify(dc, fileToTest, result);
+	}
+	
 	// Actually test the check
 	@Test
 	public void expressionsCountTest() throws Exception {
@@ -59,7 +69,7 @@ class ExpressionsCheckTest extends AbstractModuleTestSupport {
 		// Test the actual running of the check
 		DefaultConfiguration dc = createModuleConfig(ExpressionsCheck.class);
 		String fileToTest = getPackageLocation() + "ExpressionsCheckTestCode.java";
-		String result = "1: Number of Expressions: 2";
+		String result = "1: Number of Expressions: 4";
 		verify(dc, fileToTest, result);
 	}
 

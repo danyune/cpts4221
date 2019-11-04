@@ -2,8 +2,18 @@ package TestCode;
 
 public class ExternalMethodsCheckTestCode {
 
-	public static void main(String[] args) {
-		System.out.println("External Method Reference");
-		double d = Math.cos(Math.PI);	
-	}
+	 @Override
+	 public String toString(){
+	   return "dumbo";
+	 }
+	 
+	 public void theMethod() {
+	   double d = Math.cos(Math.PI);
+	   // Math.cos(Math.PI);
+	   ExternalMethodsCheckTestCode myMain = new ExternalMethodsCheckTestCode();
+	   // Local method reference
+	   String test = this.toString();
+	   // External method reference
+	    System.out.println(test);
+	 }
 }

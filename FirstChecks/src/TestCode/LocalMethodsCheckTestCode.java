@@ -2,12 +2,23 @@ package TestCode;
 
 public class LocalMethodsCheckTestCode {
 
-	public LocalMethodsCheckTestCode() {
-		int x = this.addTwo(2, 2);
-		int y = addTwo(3, 3);
+	@Override
+	public String toString() {
+		return "dumbo";
 	}
 
-	public int addTwo(int a, int b) {
-		return a + b;
+	public void theMethod() {
+		double d = Math.cos(Math.PI);
+		// Math.cos(Math.PI);
+		LocalMethodsCheckTestCode myMain = new LocalMethodsCheckTestCode();
+		// Local method reference
+		String test = this.toString();
+		secondMethod();
+		// External method reference
+		System.out.println(test);
+	}
+
+	private void secondMethod() {
+		System.out.println("Hi");
 	}
 }

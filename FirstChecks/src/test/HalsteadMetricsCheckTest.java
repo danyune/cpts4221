@@ -51,6 +51,15 @@ class HalsteadMetricsCheckTest extends AbstractModuleTestSupport {
 		halsteadMetricsCheck.finishTree(ast);
 		Mockito.verify(halsteadMetricsCheck, times(1)).finishTree(ast);
 	}
+	
+	// Test opening a file that does not exist
+	@Test
+	public void fileDoesNotExistTest() throws Exception {
+		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
+		String fileToTest = getPackageLocation() + "FakeFile.java";
+		String result = "1: Got an exception - " + fileToTest + " (No such file or directory)";
+		verify(dc, fileToTest, result);
+	}
 
 	// Actually test the check
 	@Test
@@ -60,14 +69,14 @@ class HalsteadMetricsCheckTest extends AbstractModuleTestSupport {
 		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
 		String fileToTest = getPackageLocation() + "HalsteadMetricsCheckTestCode.java";
 		String[] results = { 
-				"1: Halstead Difficulty: 14.571428571428571",
-				"1: Halstead Effort: 8029.329095568684",
-				"1: Halstead Length: 105",
-				"1: Halstead Vocabulary: 38",
-				"1: Halstead Volume: 551.0323889115764",
-				"1: Maintainability Index: 34.05604256266409",
-				"1: Number of Operands: 36",
-				"1: Number of Operators: 69"
+				"1: Halstead Difficulty: 17.4",
+				"1: Halstead Effort: 42171.83350649007",
+				"1: Halstead Length: 343",
+				"1: Halstead Vocabulary: 134",
+				"1: Halstead Volume: 2423.6685923270156",
+				"1: Maintainability Index: 0.7652124861030103",
+				"1: Number of Operands: 126",
+				"1: Number of Operators: 217"
 				};
 		verify(dc, fileToTest, results);
 	}
