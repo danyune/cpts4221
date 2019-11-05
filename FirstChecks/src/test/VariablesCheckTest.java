@@ -57,7 +57,7 @@ class VariablesCheckTest extends AbstractModuleTestSupport {
 	// Test opening a file that does not exist
 	@Test
 	public void fileDoesNotExistTest() throws Exception {
-		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
+		DefaultConfiguration dc = createModuleConfig(VariablesCheck.class);
 		String fileToTest = getPackageLocation() + "FakeFile.java";
 		String result = "1: Got an exception - " + fileToTest + " (No such file or directory)";
 		verify(dc, fileToTest, result);
