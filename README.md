@@ -1,6 +1,6 @@
 # CptS 422
 
-Deliverable 3: All metrics done, test cases done, documentation in progress.
+Deliverable 3: Documentation and Tests
 
 Daniel: Main test writer
 
