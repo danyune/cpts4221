@@ -10,6 +10,8 @@ import static org.mockito.Mockito.*;
 
 import com.puppycrawl.tools.checkstyle.*;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+
+import main.CastsCheck;
 import main.HalsteadMetricsCheck;
 
 class HalsteadMetricsCheckTest extends AbstractModuleTestSupport {
@@ -61,6 +63,25 @@ class HalsteadMetricsCheckTest extends AbstractModuleTestSupport {
 		verify(dc, fileToTest, result);
 	}
 
+	// Check an empty file
+	@Test
+	public void zeroCountTest() throws Exception {
+		// Test the actual running of the check
+		DefaultConfiguration dc = createModuleConfig(HalsteadMetricsCheck.class);
+		String fileToTest = getPackageLocation() + "EmptyClassTestCode.java";
+		String[] results = { 
+				"1: Halstead Difficulty: NaN",
+				"1: Halstead Effort: NaN",
+				"1: Halstead Length: 0",
+				"1: Halstead Vocabulary: 0",
+				"1: Halstead Volume: NaN",
+				"1: Maintainability Index: NaN",
+				"1: Number of Operands: 0",
+				"1: Number of Operators: 0"
+				};
+		verify(dc, fileToTest, results);
+	}
+	
 	// Actually test the check
 	@Test
 	public void halsteadMetricsTest() throws Exception {

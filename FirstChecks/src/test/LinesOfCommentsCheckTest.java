@@ -12,6 +12,7 @@ import static org.mockito.Mockito.*;
 import com.puppycrawl.tools.checkstyle.*;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
+import main.CastsCheck;
 import main.HalsteadMetricsCheck;
 import main.LinesOfCommentsCheck;
 
@@ -70,6 +71,15 @@ class LinesOfCommentsCheckTest extends AbstractModuleTestSupport {
 		verify(dc, fileToTest, result);
 	}
 	
+	// Check an empty file
+	@Test
+	public void zeroCountTest() throws Exception {
+		// Test the actual running of the check
+		DefaultConfiguration dc = createModuleConfig(LinesOfCommentsCheck.class);
+		String fileToTest = getPackageLocation() + "EmptyClassTestCode.java";
+		String result = "1: Lines of Comments: 0";
+		verify(dc, fileToTest, result);
+	}
 	// Actually test the check
 	@Test
 	public void externalMethodsCountTest() throws Exception {

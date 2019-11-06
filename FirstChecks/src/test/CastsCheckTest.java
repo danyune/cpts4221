@@ -62,6 +62,16 @@ class CastsCheckTest extends AbstractModuleTestSupport {
 		verify(dc, fileToTest, result);
 	}
 	
+	// Check an empty file
+	@Test
+	public void zeroCountTest() throws Exception {
+		// Test the actual running of the check
+		DefaultConfiguration dc = createModuleConfig(CastsCheck.class);
+		String fileToTest = getPackageLocation() + "EmptyClassTestCode.java";
+		String result = "1: Number of casts: 0";
+		verify(dc, fileToTest, result);
+	}
+	
 	// Actually test the check
 	@Test
 	public void variablesCountTest() throws Exception {

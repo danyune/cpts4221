@@ -12,6 +12,7 @@ import static org.mockito.Mockito.*;
 import com.puppycrawl.tools.checkstyle.*;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
+import main.CastsCheck;
 import main.HalsteadMetricsCheck;
 import main.TotalCommentsCheck;
 
@@ -67,6 +68,16 @@ class TotalCommentsCheckTest extends AbstractModuleTestSupport {
 		DefaultConfiguration dc = createModuleConfig(TotalCommentsCheck.class);
 		String fileToTest = getPackageLocation() + "FakeFile.java";
 		String result = "1: Got an exception - " + fileToTest + " (No such file or directory)";
+		verify(dc, fileToTest, result);
+	}
+	
+	// Check an empty file
+	@Test
+	public void zeroCountTest() throws Exception {
+		// Test the actual running of the check
+		DefaultConfiguration dc = createModuleConfig(TotalCommentsCheck.class);
+		String fileToTest = getPackageLocation() + "EmptyClassTestCode.java";
+		String result = "1: Total Comments: 0";
 		verify(dc, fileToTest, result);
 	}
 	
